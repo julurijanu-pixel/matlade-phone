@@ -1,0 +1,10 @@
+services:
+  matlade-phone:
+    build: .
+    container_name: matlade_phone_prototype
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - OPTIONAL_CLOUD_KEY=${OPTIONAL_CLOUD_KEY:-}
+    restart: unless-stopped

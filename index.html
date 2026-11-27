@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Matlade Phone — Telugu Voice SMS Prototype</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 820px;
+      margin: 28px auto;
+      padding: 0 16px;
+      background: #f7f8fa;
+      color: #1f2937;
+    }
+    .card {
+      background: #ffffff;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-bottom: 16px;
+    }
+    h1 {
+      margin: 0 0 6px 0;
+      font-size: 24px;
+    }
+    .sub {
+      color: #4b5563;
+      margin: 0 0 12px 0;
+      font-size: 14px;
+    }
+    .badge {
+      display: inline-block;
+      background: #eef2ff;
+      color: #3730a3;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .samples {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    button {
+      cursor: pointer;
+      border: 1px solid #d1d5db;
+      background: #f3f4f6;
+      color: #111827;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+    }
+    button.primary {
+      background: #1d4ed8;
+      color: #ffffff;
+      border-color: #1d4ed8;
+      font-weight: 600;
+    }
+    button.speak {
+      background: #047857;
+      color: #ffffff;
+      border-color: #047857;
+      font-weight: 600;
+    }
+    textarea {
+      width: 100%;
+      min-height: 84px;
+      padding: 10px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    .telugu-box {
+      font-size: 20px;
+      line-height: 1.6;
+      background: #f0fdf4;
+      border-left: 4px solid #059669;
+      padding: 12px 14px;
+      border-radius: 6px;
+      margin: 10px 0;
+    }
+    .meta {
+      font-size: 13px;
+      color: #374151;
+    }
+    .history-item {
+      border-top: 1px solid #e5e7eb;
+      padding: 8px 0;
+      font-size: 13px;
+    }
+    .history-item:first-child {
+      border-top: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Matlade Phone (మాట్లాడే ఫోన్)</h1>
+    <p class="sub">End-to-end prototype: convert English SMS alerts into clear Telugu text and spoken voice readout.</p>
+    <div id="modeBadge" class="badge">
+      {% if has_optional_key %}
+        Optional cloud key set — running local rule-based Telugu mode
+      {% else %}
+        Key not set — running local rule-based Telugu mode (zero API keys required)
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 style="font-size: 16px; margin-top: 0;">1. Pick a Sample SMS or Paste Your Own</h2>
+    <div class="samples">
+      {% for item in samples %}
+        <button type="button" class="sample-btn" data-sms="{{ item.sms }}">{{ item.title }}</button>
+      {% endfor %}
+    </div>
+    <textarea id="smsInput" placeholder="Paste an English SMS alert here...">{{ samples[0].sms if samples else "" }}</textarea>
+    <div style="margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap;">
+      <button type="button" id="convertBtn" class="primary">Convert to Telugu</button>
+      <button type="button" id="speakBtn" class="speak">Read Aloud (Telugu Voice)</button>
+      <button type="button" id="stopBtn">Stop Voice</button>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 style="font-size: 16px; margin-top: 0;">2. Telugu Output &amp; Voice Status</h2>
+    <div id="teluguOutput" class="telugu-box">Click "Convert to Telugu" to see the Telugu readout.</div>
+    <div id="extractedInfo" class="meta">Extracted details will appear here.</div>
+    <div id="voiceStatus" class="meta" style="margin-top: 6px; color: #065f46;">Voice ready.</div>
+  </div>
+
+  <div class="card">
+    <h2 style="font-size: 16px; margin-top: 0;">3. Recent Session Readouts</h2>
+    <div id="historyList" class="meta">No readouts in this session yet.</div>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
